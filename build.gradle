@@ -1,0 +1,32 @@
+plugins {
+    id 'org.gradle.playframework' version '0.9'
+    id 'com.google.cloud.tools.jib' version '1.6.1'
+}
+
+repositories {
+    jcenter()
+    maven {
+        name "lightbend-maven-release"
+        url "https://repo.lightbend.com/lightbend/maven-releases"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
+}
+
+play {
+    injectedRoutesGenerator = true
+}
+
+dependencies {
+    implementation "com.typesafe.play:play-guice_" + play.platform.scalaCompatibilityVersion.get() + ":" + play.platform.playVersion.get()
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+}
+
+jib {
+    container {
+        mainClass = "play.core.server.ProdServerStart"
+    }
+}
